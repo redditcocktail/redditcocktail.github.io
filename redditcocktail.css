@@ -48,6 +48,18 @@
     color: #D693BD;
 }
 
+.link-description a {
+    color: #8080FF;
+    text-decoration: inherit;
+    font-weight: inherit;
+}
+.link-description a:visited {
+    color: #A0A0A0;
+}
+.link-description a:hover {
+    color: #B0B0FF;
+}
+
 @media only screen and (max-device-width: 480px) {
     .link {
         width: 100%;
