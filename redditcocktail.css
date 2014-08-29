@@ -8,10 +8,11 @@
 .link:hover,
 .link:active {
     display: block;
-    width: 500px;
-    max-width: 100%;
+    width: 100%;
+    max-width: 500px;
     margin: 0 auto;
-    padding: 15px 30px;
+    /* padding: 15px 30px; */
+    padding: 0 0;
     border-right-style: solid;
     border-left-style: solid;
     border-top-style: solid;
@@ -34,7 +35,7 @@
 
 .link img {
     float: left;
-    margin-right: 15px;
+    /* margin-right: 15px; */
 }
 
 .link .link-description {
