@@ -205,6 +205,9 @@ SubredditScraper.prototype.scrape = function(amount, success, error) {
 
 
 var drinkAuthor = function(author) {
+    $('#home-page').css('display', 'none');
+    $('#cocktail-drinker').css('display', 'block');
+    $('#cocktail-editor').css('display', 'none');
     var scraper = new AuthorScraper(author);
     scraper.scrape(function(links) {
         for (var i = 0; i < links.length; i++) {
