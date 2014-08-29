@@ -105,10 +105,11 @@
         width: 20%;
         max-widht: 100px;
     }
-    h2 {
+    .link-description h2 {
         font-size: 200%;
     }
-    p {
+    .link-description p,
+    #home-page p {
         font-size: 200%;
     }
 }
