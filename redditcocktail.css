@@ -49,9 +49,9 @@
         max-width: 100%;
     }
     .link-description h2 {
-        font-size: 5em;
+        font-size: 200%;
     }
     .link-description p {
-        font-size: 5em;
+        font-size: 200%;
     }
 }
