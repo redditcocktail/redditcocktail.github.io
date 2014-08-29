@@ -1,16 +1,33 @@
 $(document).ready(function() {
     memory.recover();
-    var ingredients = window.location.search.substring(1).split('&');
-    for (var i = 0; i < ingredients.length; i++) {
-        ingredients[i] = {
-            'subreddit': ingredients[i].split('=')[0],
-            'amount': Number(ingredients[i].split('=')[1])
-        };
+    if (window.location.search.substring(1) === '') {
     }
-    drinkCocktail({
-        'name': 'test',
-        'ingredients': ingredients
-    });
+    else {
+        var URLParameters = window.location.search.substring(1).split('&');
+        for (var i = 0; i < URLParameters.length; i++) {
+            URLParameters[i] = {
+                'key': URLParameters[i].split('=')[0],
+                'value': URLParameters[i].split('=')[1]
+            };
+        }
+        for (var i = 0; i < URLParameters.length; i++) {
+            if (URLParameters[i].key === 'author') {
+                drinkAuthor(URLParameters[i]['value']);
+                return;
+            }
+        }
+        var ingredients = [];
+        for (var i = 0; i < URLParameters.length; i++) {
+            ingredients.push({
+                'subreddit': URLParameters[i].key,
+                'amount': Number(URLParameters[i]['value'])
+            });
+        }
+        drinkCocktail({
+            'name': 'test',
+            'ingredients': ingredients
+        });
+    }
 });
 
 
@@ -82,6 +99,11 @@ var drinkCocktail = function(cocktail) {
                 }
             }
             loadingLinks = false;
+            var windowBottom = $(window).scrollTop() + $(window).height(),
+                loadMoreLinksLimit = $(document).height()-20*$lastLink.height();
+            if (windowBottom >= loadMoreLinksLimit) {
+                addMoreLinks();
+            }
         };
     };
     addMoreLinks();
@@ -151,7 +173,7 @@ SubredditScraper.prototype.scrape = function(amount, success, error) {
     this.buildRequestURL();
     var scraper = this;
     $.getJSON(this.requestURL, function(json) {
-        if (json.data.children === undefined) {
+        if (json.data === undefined || json.data.children === undefined) {
             error();
             return;
         }
@@ -206,11 +228,62 @@ SubredditScraper.prototype.scrape = function(amount, success, error) {
             success(scraper.links);
             scraper.links = [];
         }
+    })
+    .error(function(jqXHR, textStatus, errorThrown) { error(); });
+};
+
+
+var drinkAuthor = function(author) {
+    var scraper = new AuthorScraper(author);
+    scraper.scrape(function(links) {
+        for (var i = 0; i < links.length; i++) {
+            addLink(links[i], true);
+        }
     });
 };
 
 
-var addLink = function(link) {
+var AuthorScraper = function(author) {
+    this.author = author;
+    this.links = [];
+    this.after = '';
+};
+AuthorScraper.prototype.scrape = function(callback) {
+    if (callback === undefined) callback = function(links) {};
+    if (this.after === null) {
+        callback([]);
+        return;
+    }
+    var requestURL = [
+        'http://www.reddit.com/user/',
+        this.author,
+        '/submitted.json?limit=100&after=',
+        this.after
+    ].join('');
+    var scraper = this;
+    $.getJSON(requestURL, function(json) {
+        if (json.data === undefined || json.data.children === undefined) {
+            callback();
+            return;
+        }
+        for (var i = 0; i < json.data.children.length; i++) {
+            scraper.links.push(json.data.children[i].data);
+        }
+        if (json.data.after !== null) {
+            scraper.after = json.data.after;
+            scraper.scrape(callback);
+        }
+        else {
+            scraper.after = null;
+            callback(scraper.links);
+        }
+    })
+    .error(function(jqXHR, textStatus, errorThrown){callback(scraper.links);});
+};
+
+
+var addLink = function(link, drinkingAuthor) {
+    if (drinkingAuthor === undefined) drinkingAuthor = false;
     var $link = $('<a>', {
         'class': 'link',
         'href': link.url,
@@ -219,7 +292,26 @@ var addLink = function(link) {
     if (!link.is_self) $('<img>', {'src': link.thumbnail}).appendTo($link);
     var $description = $('<div>', {'class': 'link-description'});
     $('<h2>').text(link.title).appendTo($description);
-    $('<p>').text('Author: ' + link.author).appendTo($description);
+    if (!drinkingAuthor) {
+        var $authorP = $('<p>'),
+            authorHRef = [
+                window.location.protocol,
+                '//',
+                window.location.pathname,
+                '?author=',
+                link.author
+            ].join('');
+        console.log(authorHRef);
+        $authorP.text('Author: ');
+        $('<a>', {
+            'href': authorHRef,
+            'target': '_blank'
+        }).text(link.author).appendTo($authorP);
+        $authorP.appendTo($description);
+    }
+    else {
+        $('<p>').text('Author: ' + link.author).appendTo($description);
+    }
     $('<p>').text('Subreddit: /r/' + link.subreddit).appendTo($description);
     $('<p>').text('Score: ' + String(link.score)).appendTo($description);
     var creationDate = new Date(link.created * 1000);
@@ -232,9 +324,11 @@ var addLink = function(link) {
     ].join('')).appendTo($description);
     $description.appendTo($link);
     $link.appendTo($('#cocktail-drinker'));
-    $link.click(function() {
-        memory.add(link.id);
-    });
+    if (!drinkAuthor) {
+        $link.click(function() {
+            memory.add(link.id);
+        });
+    }
     return $link;
 };
 
