@@ -1,5 +1,6 @@
 $(document).ready(function() {
     memory.recover();
+    console.log(window.location);
     if (window.location.search.substring(1) === '') {
     }
     else {
