@@ -70,7 +70,8 @@ var addLink = function(link) {
         'href': link.url,
         'target': '_blank'
     });
-    $('<img>', {'src': link.thumbnail}).appendTo($link);
+    $link.css('background-image', 'url(' + link.thumbnail + ')');
+    // $('<img>', {'src': link.thumbnail}).appendTo($link);
     var $description = $('<div>', {'class': 'link-description'});
     $('<h2>').text(link.title).appendTo($description);
     $('<p>').text('Author: ' + link.author).appendTo($description);
