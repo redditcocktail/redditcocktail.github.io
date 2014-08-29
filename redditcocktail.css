@@ -1,26 +1,18 @@
-#link-viewer {
-    overflow: scroll;
+#link-drinker {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin: 5%;
+    padding: 0;
 }
 
-.link,
-.link:link,
-.link:visited,
-.link:hover,
-.link:active {
+.link{
     display: block;
     width: 100%;
-    max-width: 500px;
+    /* max-width: 500px; */
     margin: 0 auto;
-    /* padding: 15px 30px; */
-    padding: 0 0;
-    border-right-style: solid;
-    border-left-style: solid;
+    padding: 15px 30px;
     border-top-style: solid;
-    border-right-width: 1px;
-    border-left-width: 1px;
     border-top-width: 1px;
-    border-right-color: #EFD3E7;
-    border-left-color: #EFD3E7;
     border-top-color: #EFD3E7;
     color: inherit;
     text-decoration: inherit;
@@ -35,7 +27,7 @@
 
 .link img {
     float: left;
-    /* margin-right: 15px; */
+    margin-right: 15px;
 }
 
 .link .link-description {
