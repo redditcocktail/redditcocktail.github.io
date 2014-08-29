@@ -302,12 +302,13 @@ var addLink = function(link, drinkingAuthor) {
                 '?author=',
                 link.author
             ].join('');
-        console.log(authorHRef);
         $authorP.text('Author: ');
         $('<a>', {
             'href': authorHRef,
             'target': '_blank'
-        }).text(link.author).appendTo($authorP);
+        }).text(link.author).appendTo($authorP).click(function() {
+            memory.add(link.id);
+        });
         $authorP.appendTo($description);
     }
     else {
