@@ -108,8 +108,10 @@
     .link-description h2 {
         font-size: 200%;
     }
-    .link-description p,
-    #home-page p {
+    .link-description p {
         font-size: 200%;
+    }
+    #home-page p {
+        height: 25%;
     }
 }
