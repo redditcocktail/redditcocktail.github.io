@@ -20,6 +20,10 @@
     font-family: Verdana, Arial, serif;
 }
 
+.link:first-child {
+    border-top-style: none;
+}
+
 .link * {
     margin: 0;
     padding: 0;
