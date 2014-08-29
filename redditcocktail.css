@@ -48,7 +48,10 @@
     .link {
         max-width: 100%;
     }
+    .link-description h2 {
+        font-size: 5em;
+    }
     .link-description p {
-        color: blue;
+        font-size: 5em;
     }
 }
