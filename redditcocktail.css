@@ -54,13 +54,13 @@
         max-width: 100%;
     }
     .link img {
-        width: 200%;
-        height: 200%;
+        width: 2em;
+        height: 2em;
     }
     .link-description h2 {
-        font-size: 200%;
+        font-size: 2em;
     }
     .link-description p {
-        font-size: 200%;
+        font-size: 2em;
     }
 }
