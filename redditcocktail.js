@@ -17,9 +17,11 @@ var drinkCocktail = function(cocktail) {
     $('#cokctail-editor').css('display', 'none');
     var scrapers = [],
         $lastLink = null,
-        loadingLinks = false;
-    for (var i = 0; i < cocktail.ingredients.length; i++)
+        loadingLinks = false,
+        linksBottomAndId = [];
+    for (var i = 0; i < cocktail.ingredients.length; i++) {
         scrapers.push(new SubredditScraper(cocktail.ingredients[i].subreddit));
+    }
     var addMoreLinks = function(callback) {
         loadingLinks = true;
         var newLinks = [];
@@ -67,14 +69,26 @@ var drinkCocktail = function(cocktail) {
             while (bundles.length > 0) {
                 var bundle = bundles.shift();
                 bundle = shuffleArray(bundle);
-                while (bundle.length > 0)
-                    $lastLink = addLink(bundle.shift());
+                while (bundle.length > 0) {
+                    var newLink = bundle.shift();
+                    $lastLink = addLink(newLink);
+                    linksBottomAndId.push({
+                        bottom: $lastLink.position().top + $lastLink.height(),
+                        id: newLink.id
+                    });
+                }
             }
             loadingLinks = false;
         };
     };
     addMoreLinks();
     $(window).scroll(function() {
+        // Remember the links that have been scrolled out.
+        while (linksBottomAndId.length > 0 &&
+                linksBottomAndId[0].bottom < $(window).scrollTop()) {
+            memory.add(linksBottomAndId.shift().id);
+        }
+        // Load more links if the user has scrolled down too much.
         if (loadingLinks) return;
         if ($lastLink === null) return;
         var windowBottom = $(window).scrollTop() + $(window).height(),
@@ -215,6 +229,9 @@ var addLink = function(link) {
     ].join('')).appendTo($description);
     $description.appendTo($link);
     $link.appendTo($('#cocktail-drinker'));
+    $link.click(function() {
+        memory.add(link.id);
+    });
     return $link;
 };
 
