@@ -1,12 +1,15 @@
 $(document).ready(function() {
     memory.recover();
+    var ingredients = window.location.search.substring(1).split('&');
+    for (var i = 0; i < ingredients.length; i++) {
+        ingredients[i] = {
+            'subreddit': ingredients[i].split('=')[0],
+            'amount': Number(ingredients[i].split('=')[1])
+        };
+    }
     drinkCocktail({
         'name': 'test',
-        'ingredients': [
-            {'subreddit': 'askreddit', 'amount': 1},
-            {'subreddit': 'earthporn', 'amount': 1},
-            {'subreddit': 'cityporn', 'amount': 2}
-        ]
+        'ingredients': ingredients
     });
 });
 
