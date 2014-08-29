@@ -53,6 +53,10 @@
         width: 100%;
         max-width: 100%;
     }
+    .link img {
+        width: 200%;
+        height: 200%;
+    }
     .link-description h2 {
         font-size: 200%;
     }
