@@ -46,6 +46,7 @@
 
 @media only screen and (max-device-width: 480px) {
     .link {
+        width: 100%;
         max-width: 100%;
     }
     .link-description h2 {
