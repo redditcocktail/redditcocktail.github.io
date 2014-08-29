@@ -1,6 +1,5 @@
 $(document).ready(function() {
     memory.recover();
-    console.log(window.location);
     if (window.location.search.substring(1) === '') {
     }
     else {
@@ -298,6 +297,7 @@ var addLink = function(link, drinkingAuthor) {
             authorHRef = [
                 window.location.protocol,
                 '//',
+                window.location.hostname,
                 window.location.pathname,
                 '?author=',
                 link.author
