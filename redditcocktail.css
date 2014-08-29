@@ -1,0 +1,52 @@
+#link-viewer {
+    overflow: scroll;
+}
+
+.link,
+.link:link,
+.link:visited,
+.link:hover,
+.link:active {
+    display: block;
+    width: 500px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 15px 30px;
+    border-right-style: solid;
+    border-left-style: solid;
+    border-top-style: solid;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-top-width: 1px;
+    border-right-color: #EFD3E7;
+    border-left-color: #EFD3E7;
+    border-top-color: #EFD3E7;
+    color: inherit;
+    text-decoration: inherit;
+    font-weight: inherit;
+    font-family: Verdana, Arial, serif;
+}
+
+.link * {
+    margin: 0;
+    padding: 0;
+}
+
+.link img {
+    float: left;
+    margin-right: 15px;
+}
+
+.link .link-description {
+    overflow: hidden;
+}
+
+.link-description h2 {
+    font-size: 14px;
+    color: #9C0063;
+}
+
+.link-description p {
+    font-size: 12px;
+    color: #D693BD;
+}
